@@ -8,6 +8,17 @@ Laravel Intallation & API setup
     -   npm install -D tailwindcss@3
     -   npm install -D tailwindcss postcss autoprefixer
 
+## Project Run
+
+```
+composer install
+npm install
+npm run dev
+npm run build-css
+php artian migrate
+php artisan serve
+```
+
 ```
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
@@ -38,3 +49,5 @@ export default defineConfig({
 ```
 
 ## Keep Alive
+
+-   Cache Component, use for dynamic component

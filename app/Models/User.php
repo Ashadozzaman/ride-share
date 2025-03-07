@@ -6,11 +6,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens,HasFactory, Notifiable;
+
+    const IS_VALID_EMAIL = 1;
+    const IS_INVALID_EMAIL = 0;
+    const ADMIN_ROLE = 'ADMIN';
+    const CUSTOMER_ROLE = 'CUSTOMER';
+    const DRIVER_ROLE = 'DRIVER';
 
     /**
      * The attributes that are mass assignable.
@@ -21,6 +27,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'otp_code',
+        'google_id',
+        'role',
+        'is_vaild_email',
     ];
 
     /**
@@ -44,5 +54,13 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public static function generateOTP($length = 6) {
+        return mt_rand(100000, 999999);
+    }
+
+    public  static function getUserByEmail($email) {
+        return User::where('email', $email)->first();
     }
 }
