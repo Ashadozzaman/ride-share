@@ -1,6 +1,12 @@
 <template>
     <div>
-        <input type="text" class="input-class-text " placeholder="Enter Password" />
+        <Loading :loading="loading" />
+        <InputError :errors="vStep2$.password.$errors">
+            <input v-model="step2Input.password" type="password" class="input-class-text "
+                placeholder="Enter Password" />
+
+        </InputError>
+        <!-- <input type="text" class="input-class-text " placeholder="Enter Password" /> -->
 
         <div class="flex flex-row justify-between  mt-5">
             <button @click="signupStore.backStep2"
@@ -16,10 +22,13 @@
     </div>
 </template>
 <script setup>
+import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
+// import Loading from "../../../components/base-components/Loading.vue";
 import { useSignupStore } from "../../../stores/auth/signup-store";
 
 const signupStore = useSignupStore();
+const { vStep2$, step2Input, loading } = storeToRefs(signupStore);
 
 onMounted(() => {
     console.log('Render Step 2');

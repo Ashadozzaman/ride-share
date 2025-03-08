@@ -19,30 +19,32 @@ class AuthController extends Controller
     {
         //
         $data = $request->all();
-        $validator = Validator::make($data, [ 
+        $validator = Validator::make($data, [
             'email' => ['required'],
             'password' => ['required'],
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response([
+                'errors' => $validator->errors()->all(),
+            ], 422);
         }
 
         $user =  User::getUserByEmail($data['email']);
 
         if (!$user) {
             return response()->json([
-                'message' => 'User not found',            
+                'message' => 'User not found',
             ], 404);
         }
 
         if (!Hash::check($data['password'], $user->password)) {
             return response()->json([
-                'message' => 'Invalid password',    
-            ],401);
-        } else{
+                'message' => 'Invalid password',
+            ], 401);
+        } else {
             Auth::login($user);
-            $token = $request->user()->createToken($data['email']); 
+            $token = $request->user()->createToken($data['email']);
 
 
             return response()->json([
@@ -63,13 +65,16 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response(
+                ['errors' => $validator->errors()->all()],
+                422
+            );
         }
 
         $user = User::create([
             'name' => $data['name'],
-            'email' => $data['email'],            
-            'otp_code' => User::generateOTP(),            
+            'email' => $data['email'],
+            'otp_code' => User::generateOTP(),
             'password' => bcrypt($data['password']),
             'is_valid_email' => User::IS_INVALID_EMAIL,
         ]);
@@ -94,7 +99,9 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
+            return response([
+                'errors' => $validator->errors()->all(),
+            ], 422);
         }
 
         $user = User::where('email', $data['email'])->first();
@@ -103,7 +110,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'User not found',
             ], 404);
-        }else{
+        } else {
             if ($user->otp_code == $data['otp_code']) {
                 $user->is_valid_email = User::IS_VALID_EMAIL;
                 $user->save();
