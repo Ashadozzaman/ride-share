@@ -3,7 +3,7 @@ import { email, required } from '@vuelidate/validators';
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { ref } from "vue";
 import { postData } from '../../helper/http';
-import { showErrorToast, showSuccessToast } from '../../helper/utils';
+import { setUserData, showErrorToast, showSuccessToast } from '../../helper/utils';
 
 export const useSignupStore = defineStore('signup',() => {
     const currentStep = ref("currentStep");
@@ -41,7 +41,7 @@ export const useSignupStore = defineStore('signup',() => {
 
 
     async function moveStep1() {
-        const valid = await vStep1$.value.$validate(); 
+        const valid = await vStep1$.value.$validate();
         if (!valid) {
             return false;
         }
@@ -49,7 +49,7 @@ export const useSignupStore = defineStore('signup',() => {
     }
 
     async function moveStep2() {
-        const valid = await vStep2$.value.$validate(); 
+        const valid = await vStep2$.value.$validate();
         if (!valid) {
             return false;
         }
@@ -77,15 +77,18 @@ export const useSignupStore = defineStore('signup',() => {
     }
 
     async function signupUser(){
-        const valid = await vStep3$.value.$validate(); 
+        const valid = await vStep3$.value.$validate();
         if (!valid) {
             return false;
         }
         try{
             loading.value = true
             const data = await postData('/user/email-verification',{...step3Input.value,...step1Input.value});
-            console.log(data);
-            showSuccessToast(data.message); 
+            // console.log(data);
+            setUserData(data);
+            // localStorage.setItem('userData',JSON.stringify(...data?.user,...data?.token));
+            window.location.href = '/app/dashboard';
+            showSuccessToast(data.message);
             loading.value = false
         }catch(errors){
             loading.value = false
@@ -94,18 +97,11 @@ export const useSignupStore = defineStore('signup',() => {
                 showErrorToast(message);
             }
         }
-        // try{
-        //     const res = await fetch(App.apiBaseUrl + '/user/email-verification' )
-        //     const data = await res.json();
-        //     console.log(data);
-        // }catch(e){
-        //     console.log(e);
-        // }
     }
 
     return {  moveStep1,moveStep2,backStep2,backStep3, currentStep,step1,step2,step3,step1Input,vStep1$,step2Input,vStep2$,step3Input,vStep3$ ,signupUser,loading}
 });
-
+// For update data any place in the app this function will be called and update the data
 if(import.meta.hot){
     import.meta.hot.accept(acceptHMRUpdate(useSignupStore, import.meta.hot) )
 }

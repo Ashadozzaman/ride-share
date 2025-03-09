@@ -33,14 +33,21 @@ class AuthController extends Controller
         $user =  User::getUserByEmail($data['email']);
 
         if (!$user) {
-            return response()->json([
-                'message' => 'User not found',
+            return response([
+                'errors' => [
+                    'message' => 'User not found',
+                    // 'isLoggedIn' => false
+                ],
             ], 404);
         }
 
         if (!Hash::check($data['password'], $user->password)) {
-            return response()->json([
-                'message' => 'Invalid password',
+            return response([
+                'errors' => [
+                    'message' => 'Invalid password',
+                    // 'isLoggedIn' => false
+
+                ],
             ], 401);
         } else {
             Auth::login($user);
@@ -83,9 +90,13 @@ class AuthController extends Controller
         // dispatch(new SendEmailEvent($user));
         SendEmailEvent::dispatch($user);
 
+        Auth::login($user);
+        $token = $request->user()->createToken($data['email']);
+
         return response()->json([
             'message' => 'Successfully registered',
-            'user' => $user
+            'user' => $user,
+            'token' => $token->plainTextToken
         ], 201);
     }
 

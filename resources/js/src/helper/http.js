@@ -13,7 +13,10 @@ export function postData(endpoint, inputData) {
             const data = await response.json();
             if(typeof data?.errors !== 'undefined'){
                 console.log(data);
-                reject(data?.errors);
+                const errors = Array.isArray(data?.errors) ?
+                data?.errors :
+                Object.values(data?.errors);
+                reject(errors);
             }else{
                 resolve(data);
             }

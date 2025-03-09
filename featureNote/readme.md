@@ -51,3 +51,10 @@ export default defineConfig({
 ## Keep Alive
 
 -   Cache Component, use for dynamic component
+
+### vue 3
+
+-   Composition API
+-   vue toast msg
+-   vueidalte(validation)
+-   penia(state management)
