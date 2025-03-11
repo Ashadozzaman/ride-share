@@ -3,7 +3,7 @@ import { email, required } from '@vuelidate/validators';
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { ref } from "vue";
 import { postData } from '../../helper/http';
-import { setUserData, showErrorToast, showSuccessToast } from '../../helper/utils';
+import { getUserData, setUserData, showErrorToast, showSuccessToast } from '../../helper/utils';
 
 export const useLoginStore = defineStore('login',() => {
     const currentStep = ref("currentStep");
@@ -62,8 +62,28 @@ export const useLoginStore = defineStore('login',() => {
         }
     }
 
+    async function logout(){
+        try{
+            const userData = getUserData();
+            loading.value = true
+            const data = await postData('/logout',{
+                userId: userData?.user?.id
+            });
+            // console.log(data);
+            localStorage.clear();
+            window.location.href = '/app/login';
+            showSuccessToast(data.message);
+            loading.value = false
+        }catch(errors){
+            loading.value = false
+            for(const message of errors){
+                showErrorToast(message);
+            }
+        }
+    }
+
     return {
-        next, previous, signin, currentStep,step1,step2,step1Input,vStep1$,step2Input,vStep2$
+        next, previous, signin,logout, currentStep,step1,step2,step1Input,vStep1$,step2Input,vStep2$
     }
 })
 

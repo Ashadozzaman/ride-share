@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Mail\SendMail;
 use Illuminate\Http\Request;
 use App\Events\SendEmailEvent;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -135,5 +136,35 @@ class AuthController extends Controller
                 ], 422);
             }
         }
+    }
+
+    public function logout_(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ], 200);
+    }
+
+    public function logout(Request $request)
+    {
+        $userId = $request->userId;
+        $user = User::find($userId);
+        DB::table('personal_access_tokens')->where('tokenable_id', $userId)->delete();
+        // $request->user()->currentAccessToken()->delete();
+
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ], 200);
+    }
+
+    public function getUsers(Request $request)
+    {
+        $query = $request->input('query');
+        $data = User::select('id', 'name', 'email', 'role')
+            ->where('name', 'like', '%' . $query . '%')
+            ->paginate(2);
+        return response($data, 200);
     }
 }

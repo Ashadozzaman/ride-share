@@ -43,3 +43,11 @@ export function getUserData(){
         showErrorToast(e?.message     || 'Something went wrong');
     }
 }
+
+export function _debounce(cb, delay) {
+    let timer;
+    return function (...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => cb(...args), delay);
+    };
+}
