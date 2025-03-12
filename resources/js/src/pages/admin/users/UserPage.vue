@@ -1,16 +1,14 @@
 <template>
     <div class="ml-4 mr-4 w-full">
         <h1 class="text-2xl text-semibold mb-4">Users Page</h1>
-        <UserTable
-            :users="userData?.data"
-            :loading="loading"
-            @get-users="userStore.getUsers"
-        />
+        <!-- Search Input -->
+        <div class="flex mb-5">
+            <input v-model="userStore.query" @input="userStore.searchUsers" type="text" placeholder="Search..."
+                class="border border-gray-300 rounded-md py-2 px-2" />
+        </div>
+        <UserTable :users="userData?.data" :loading="loading" @get-users="userStore.getUsers" />
         <div class="mt-2">
-            <TailwindPagination
-                :data="userData"
-                @pagination-change-page="userStore.getUsers"
-            />
+            <TailwindPagination :data="userData" @pagination-change-page="userStore.getUsers" />
         </div>
     </div>
 </template>

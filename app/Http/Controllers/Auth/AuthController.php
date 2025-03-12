@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use Validator;
 use App\Models\User;
-use App\Mail\SendMail;
 use Illuminate\Http\Request;
 use App\Events\SendEmailEvent;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Response;
 
 class AuthController extends Controller
 {
