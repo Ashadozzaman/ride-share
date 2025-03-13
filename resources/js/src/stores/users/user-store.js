@@ -10,8 +10,6 @@ export const useUsersStore = defineStore('user-store', () => {
     const query = ref("");
     const page = ref(1);
 
-// const emit = defineEmits(["getUsers"]);
-
     async function getUsers(page = 1){
         try{
             loading.value = true
