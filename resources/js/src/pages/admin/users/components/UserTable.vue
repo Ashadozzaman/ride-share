@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { _debounce } from "../../../../helper/utils";
 const props = defineProps(["users"]);
 
-const emit = defineEmits(["getUsers"]);
+const emit = defineEmits(["getUsers", "toggleModal"]);
 const query = ref("");
 const page = ref(1);
 
@@ -27,7 +27,11 @@ const searchUsers = _debounce(function () {
             </tr>
         </thead>
         <tbody>
-            <tr class="text-left" v-for="(user, index) in users" :key="user?.id">
+            <tr
+                class="text-left"
+                v-for="(user, index) in users"
+                :key="user?.id"
+            >
                 <td class="border border-gray-300 py-2 px-4">
                     {{ index + 1 }}
                 </td>
@@ -36,15 +40,19 @@ const searchUsers = _debounce(function () {
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
                     <a :href="'mailto:' + user?.email" class="text-indigo-600">
-                        {{ user?.email }}</a>
+                        {{ user?.email }}</a
+                    >
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
                     {{ user?.role }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
-                    <button class="bg-indigo-600 text-white py-2 px-2 rounded-md shadow-sm">
+                    <a
+                        class="bg-indigo-600 text-white py-2 px-2 rounded-md shadow-sm cursor-pointer"
+                        @click="emit('toggleModal', user?.id)"
+                    >
                         Edit
-                    </button>
+                    </a>
                 </td>
             </tr>
         </tbody>

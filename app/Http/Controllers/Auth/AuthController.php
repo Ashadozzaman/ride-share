@@ -80,6 +80,7 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'otp_code' => User::generateOTP(),
+            'role' => User::CUSTOMER_ROLE,
             'password' => bcrypt($data['password']),
             'is_valid_email' => User::IS_INVALID_EMAIL,
         ]);
@@ -156,12 +157,22 @@ class AuthController extends Controller
         ], 200);
     }
 
+
+    public function updateRole(Request $request)
+    {
+        DB::table('users')->where('id', $request->userId)->update(['role' => $request->role]);
+
+        return response()->json([
+            'message' => 'Role updated successfully'
+        ], 200);
+    }
+
     public function getUsers(Request $request)
     {
         $query = $request->input('query');
         $data = User::select('id', 'name', 'email', 'role')
             ->where('name', 'like', '%' . $query . '%')
-            ->paginate(2);
+            ->paginate(5);
         return response($data, 200);
     }
 }
