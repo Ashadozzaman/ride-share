@@ -14,13 +14,13 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $passwrd = 'Admin@123';
+        $password = 'Admin@123';
         User::create([
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'otp_code' => User::generateOTP(),
             'role' => User::ADMIN_ROLE,
-            'password' => bcrypt($passwrd),
+            'password' => bcrypt($password),
             'is_valid_email' => User::IS_VALID_EMAIL,
         ]);
     }
