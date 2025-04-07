@@ -30,6 +30,7 @@ const emit = defineEmits(["closeModal"]);
                             >
                                 <div class="text-lg font-medium leading-6">
                                     <slot name="title"></slot>
+                                    <hr />
                                 </div>
                                 <div class="mt-2">
                                     <slot name="body"></slot>

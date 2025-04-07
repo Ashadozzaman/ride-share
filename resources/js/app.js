@@ -10,6 +10,8 @@ import ToastPlugin from 'vue-toast-notification';
 //import 'vue-toast-notification/dist/theme-default.css';
 import 'vue-toast-notification/dist/theme-bootstrap.css';
 
+import 'sweetalert2/dist/sweetalert2.min.css';
+import VueSweetalert2 from 'vue-sweetalert2';
 
 /**
     import.meta.glob(pattern) is a Vite-specific feature that allows dynamic import of multiple files that match a given pattern.
@@ -34,6 +36,7 @@ const penia = createPinia();
 app.use(penia);
 app.use(router);
 app.use(ToastPlugin);
+app.use(VueSweetalert2);
 registerComponent(app);
 
 app.mount('#app');

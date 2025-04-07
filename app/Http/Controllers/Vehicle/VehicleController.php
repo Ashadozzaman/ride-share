@@ -10,12 +10,12 @@ use Illuminate\Support\Facades\Validator;
 
 class VehicleController extends Controller
 {
-    public function getVehicles()
+    public function getVehicles(Request $request)
     {
-        $vehicles = Vehicle::all();
-        return response([
-            'vehicles' => $vehicles
-        ], 200);
+        $query = $request->input('query');
+        $data = Vehicle::where('name', 'like', '%' . $query . '%')
+            ->paginate(10);
+        return response($data, 200);
     }
 
     public function addImages(Request $request)

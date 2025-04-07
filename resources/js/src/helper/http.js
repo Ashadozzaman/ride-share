@@ -13,7 +13,7 @@ function getHeaders() {
         headers['authorization'] = `Bearer ${userData?.token}`;
         return headers;
     }
-    
+
 }
 export function postData(endpoint, inputData) {
     const headers = getHeaders();
@@ -33,7 +33,43 @@ export function postData(endpoint, inputData) {
         }
     });
 }
+export function putData(endpoint, inputData) {
+    const headers = getHeaders();
+    console.log(headers);
+    return new Promise(async(resolve, reject) => {
+        try {
+            const response = await fetch(App.apiBaseUrl + endpoint, {
+                method: 'PUT',
+                headers:headers,
+                body: JSON.stringify(inputData),
+            });
+            const data = await response.json();
+            handleHttpError(data,resolve,reject)
 
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+export function deleteData(endpoint, inputData) {
+    const headers = getHeaders();
+    console.log(headers);
+    return new Promise(async(resolve, reject) => {
+        try {
+            const response = await fetch(App.apiBaseUrl + endpoint, {
+                method: 'DELETE',
+                headers:headers,
+                body: JSON.stringify(inputData),
+            });
+            const data = await response.json();
+            handleHttpError(data,resolve,reject)
+
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
 export function getData(endpoint) {
     const headers = getHeaders();
     return new Promise(async(resolve, reject) => {
@@ -43,7 +79,7 @@ export function getData(endpoint) {
                 headers:headers,
             });
             const data = await response.json();
-            
+
             handleHttpError(data,resolve,reject)
         } catch (error) {
             reject(error);
@@ -52,7 +88,6 @@ export function getData(endpoint) {
 }
 
 export function handleHttpError(data,resolve,reject){
-    console.log(data?.message);
     if(typeof data?.errors !== 'undefined'){
         console.log(data);
         const errors = Array.isArray(data?.errors) ?
