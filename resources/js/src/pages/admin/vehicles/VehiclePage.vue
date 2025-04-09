@@ -5,6 +5,11 @@
             :loading="loading"
             @toggleModal="vehicleStore.toggleModal"
         />
+        <UploadImageModal
+            :show="uploadVehicleImageModal"
+            :loading="loading"
+            @getVehicles="vehicleStore.getVehicles"
+        />
         <h1 class="text-2xl text-semibold mb-4">Vehicales Page</h1>
         <!-- Search Input -->
         <div class="flex justify-between mb-5">
@@ -26,6 +31,7 @@
             @toggleModal="vehicleStore.toggleModal"
             @editVehicle="editVehicle"
             @removeVehicle="removeVehicle"
+            @uploadImage="uploadImage"
         />
         <div class="mt-2">
             <!-- <TailwindPagination /> -->
@@ -36,7 +42,9 @@
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { confirmDelation } from "../../../helper/utils";
+import { useUploadVehicleImageStore } from "../../../stores/vehicle/upload-vehicle-image-store";
 import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
+import UploadImageModal from "./components/UploadImageModal.vue";
 import VehicleModal from "./components/VehicleModal.vue";
 import VehicleTable from "./components/VehicleTable.vue";
 // const emit = defineEmits(["toggleModal"]);
@@ -44,11 +52,23 @@ import VehicleTable from "./components/VehicleTable.vue";
 const vehicleStore = useVehicleStore();
 const { vehicles, loading, modalVal, toggleModal, edit, vehicleInput } =
     storeToRefs(vehicleStore);
+const uploadVehicleImageStore = useUploadVehicleImageStore();
+const {
+    modalVal: uploadVehicleImageModal,
+    uploadImageInput,
+    loading: uploadLoading,
+} = storeToRefs(uploadVehicleImageStore);
 function editVehicle(vehicle) {
     edit.value = true;
     vehicleInput.value = vehicle;
     // alert(edit.value);
     modalVal.value = true;
+}
+
+function uploadImage(id) {
+    uploadImageInput.value.id = id;
+    // uploadImageInput.value.image = ;
+    uploadVehicleImageModal.value = true;
 }
 
 function removeVehicle(id) {

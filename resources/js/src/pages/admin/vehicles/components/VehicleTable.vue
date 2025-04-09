@@ -64,12 +64,13 @@ const searchvehicles = _debounce(function () {
                     {{ vehicle?.model }}
                 </td>
                 <td class="border border-gray-300 py-2 px-4">
-                    {{ vehicle?.price }}
+                    ${{ vehicle?.price }}
                 </td>
 
                 <td class="border border-gray-300 py-2 px-4">
                     <a
                         class="bg-indigo-400 text-white py-2 px-2 rounded-md shadow-sm cursor-pointer"
+                        @click="emit('uploadImage', vehicle?.id)"
                     >
                         UploadImage
                     </a>
