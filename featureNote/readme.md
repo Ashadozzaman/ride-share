@@ -58,3 +58,7 @@ export default defineConfig({
 -   vue toast msg
 -   vueidalte(validation)
 -   penia(state management)
+-   Vehicle CRUD With
+-   File Upload via FormData
+
+### TO DO

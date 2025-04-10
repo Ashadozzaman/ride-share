@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { isAdmin } from '../middleware/isAdmin'
 
 
 const routes = [
@@ -23,11 +24,16 @@ const routes = [
         children: [
             {
                 path: '/users',
-                component: () => import('../pages/admin/users/UserPage.vue')
+                component: () => import('../pages/admin/users/UserPage.vue'),
+                beforeEnter: isAdmin
             },
             {
                 path: '/vehicles',
                 component: () => import('../pages/admin/vehicles/VehiclePage.vue')
+            },
+            {
+                path: '/welcome',
+                component: () => import('../pages/admin/welcome/WelcomePage.vue')
             }
         ]
     }

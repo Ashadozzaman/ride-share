@@ -1,10 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import { ref } from "vue";
-import { postData, putData } from "../../helper/http";
 import {
-    getUserData,
-    showErrorToast,
-    showSuccessToast,
+    getUserData
 } from "../../helper/utils";
 
 export const useUploadVehicleImageStore = defineStore(
@@ -17,37 +14,9 @@ export const useUploadVehicleImageStore = defineStore(
             id: "",
         });
 
-        async function addOrUpdateVehicle() {
-            const valid = await vVehicle$.value.$validate();
-            if (!valid) {
-                return false;
-            }
-            try {
-                loading.value = true;
-                const data = edit.value
-                    ? await putData("/vehicles", { ...vehicleInput.value })
-                    : await postData("/vehicles", { ...vehicleInput.value });
-                console.log(data);
-                showSuccessToast(data.message);
-                getVehicles();
 
-                vVehicle$.value.$reset();
-                // Clear the form fields
-                vehicleInput.value = {};
-                edit.value = false;
-                modalVal.value = false;
-                loading.value = false;
-            } catch (errors) {
-                console.log(errors);
-                loading.value = false;
-                for (const message of errors) {
-                    showErrorToast(message);
-                }
-            }
-        }
         function toggleModal() {
             edit.value = false;
-            console.log(edit.value);
             modalVal.value = !modalVal.value;
             vehicleInput.value = {};
         }
