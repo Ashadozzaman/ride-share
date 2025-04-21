@@ -34,6 +34,10 @@ const routes = [
             {
                 path: '/welcome',
                 component: () => import('../pages/admin/welcome/WelcomePage.vue')
+            },
+            {
+                path:'/profile',
+                component: () => import('../pages/admin/users/Profile.vue')
             }
         ]
     }

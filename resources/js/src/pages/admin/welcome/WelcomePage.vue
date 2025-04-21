@@ -72,7 +72,7 @@
                         class="flex gap-2 hover:bg-purple-500 border border-indigo-700 text-gray-600 hover:text-white font-bold py-2 px-2 rounded-md shadow-sm"
                     >
                         <span>Rent Now</span>
-                        <RightArrowIcon />
+                        <RightArrowIcon class="mt-1" />
                     </button>
                 </div>
             </div>

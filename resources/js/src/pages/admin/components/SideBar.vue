@@ -1,5 +1,5 @@
 <template>
-    <div class="min:h-screen flex">
+    <div class="min-h-screen flex">
         <nav :class="`h-full bg-slate-50 ${toggleSidebar ? 'w-[210px]' : ''} `">
             <div class="flex flex-row justify-between p-3">
                 <img
@@ -87,8 +87,14 @@
                             {{ users?.user?.role }}
                         </li>
                         <li
+                            class="p-2 hover:bg-gray-100 rounded-md cursor-pointer text-gray-600 font-semibold"
+                        >
+                            <router-link to="/profile">Profile</router-link>
+                        </li>
+
+                        <li
                             @click="loginStore.logout"
-                            class="p-2 hover:bg-gray-100 rounded-md cursor-pointer text-red-600 fot-semibold"
+                            class="p-2 hover:bg-gray-100 rounded-md cursor-pointer text-red-600 font-semibold"
                         >
                             <a href="">Logout</a>
                         </li>

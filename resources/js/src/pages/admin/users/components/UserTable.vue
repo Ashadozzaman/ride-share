@@ -1,15 +1,22 @@
 <script setup>
-import { ref } from "vue";
-import { _debounce } from "../../../../helper/utils";
+import { computed, ref } from "vue";
+import { _debounce, getUserData } from "../../../../helper/utils";
+import { hideEditButton } from "../../../../middleware/hideEditButton";
 const props = defineProps(["users"]);
 
 const emit = defineEmits(["getUsers", "toggleModal"]);
 const query = ref("");
 const page = ref(1);
+const loginUser = getUserData();
 
 const searchUsers = _debounce(function () {
     emit("getUsers", page.value, query.value);
 }, 200);
+const shouldHideEditButton = computed(() => {
+    return hideEditButton(loginUser?.user?.role);
+});
+
+console.log(shouldHideEditButton);
 </script>
 <template>
     <div class="flex mb-5">

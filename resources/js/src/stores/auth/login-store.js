@@ -51,7 +51,7 @@ export const useLoginStore = defineStore('login',() => {
             const data = await postData('/login',{...step2Input.value,...step1Input.value});
             console.log(data);
             setUserData(data);
-            window.location.href = '/app/dashboard';
+            window.location.href = '/app/welcome';
             showSuccessToast(data.message);
             loading.value = false
         }catch(errors){
