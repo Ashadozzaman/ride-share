@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\mapbox\PlaceController;
 use App\Http\Controllers\Vehicle\VehicleController;
 
 Route::get('/user', function (Request $request) {
@@ -27,5 +28,10 @@ Route::controller(VehicleController::class)->group(function () {
     Route::post('vehicles/images', 'addImages');
     Route::put('vehicles', 'update');
     Route::delete('vehicles', 'destroy');
+});
+
+
+Route::controller(PlaceController::class)->group(function () {
+    Route::get('places', 'fetchPlaces');
 });
 // });

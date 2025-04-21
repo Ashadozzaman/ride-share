@@ -18,7 +18,9 @@
                         <option value="">Taxi 2</option>
                     </select>
                     <div class="flex gap-1">
-                        <input
+                        <AutoCompleteInput :placeHolder="'Pickup'" />
+                        <AutoCompleteInput :placeHolder="'Destination'" />
+                        <!-- <input
                             type="text"
                             name=""
                             id=""
@@ -31,7 +33,7 @@
                             id=""
                             placeholder="Destination"
                             class="input-class-text"
-                        />
+                        /> -->
                     </div>
                     <button
                         class="bg-indigo-600 text-white py-2 px-2 rounded-md shadow-sm"
@@ -81,6 +83,7 @@
 </template>
 <script setup>
 import { App } from "../../../api/api";
+import AutoCompleteInput from "./components/AutoCompleteInput.vue";
 
 // import RightArrowIcon from "../../components/icons/RightArrowIcon.vue";
 </script>
