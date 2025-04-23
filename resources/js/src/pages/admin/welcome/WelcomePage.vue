@@ -14,7 +14,13 @@
                     </h1>
                     <select name="" id="" class="input-class-text">
                         <option value="">Select Taxi</option>
-                        <option value="">Taxi 1</option>
+                        <option
+                            value=""
+                            v-for="vehicle in vehicles?.data"
+                            :key="vehicle?.id"
+                        >
+                            {{ vehicle?.name }}-{{ vehicle?.model }}
+                        </option>
                         <option value="">Taxi 2</option>
                     </select>
                     <div class="flex gap-1">
@@ -46,44 +52,23 @@
         <div
             class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4"
         >
-            <div
-                class="flex flex-col shadow-md pb-2 gap-2"
-                v-for="car in [1, 2, 3, 4, 5]"
-                :key="car"
-            >
-                <div align="center">
-                    <!-- <img
-                    :src="App.baseUrl + '/images/vehicle-icon.png'"
-                    alt="Logo"
-                /> -->
-                    <img
-                        :src="App.baseUrl + '/images/taxi.jpg'"
-                        alt="Logo"
-                        height="300px"
-                        width="300px"
-                    />
-                    <div class="text-xl font-semibold py-1">
-                        <span>Tesla Modal Y</span>
-                    </div>
-                    <div>
-                        <span>12$/Km</span>
-                    </div>
-                </div>
-                <div class="flex justify-center">
-                    <button
-                        class="flex gap-2 hover:bg-purple-500 border border-indigo-700 text-gray-600 hover:text-white font-bold py-2 px-2 rounded-md shadow-sm"
-                    >
-                        <span>Rent Now</span>
-                        <RightArrowIcon class="mt-1" />
-                    </button>
-                </div>
-            </div>
+            <VehicleList :vehicles="vehicles?.data" />
         </div>
     </div>
 </template>
 <script setup>
+import { storeToRefs } from "pinia";
+import { onMounted } from "vue";
 import { App } from "../../../api/api";
+import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
 import AutoCompleteInput from "./components/AutoCompleteInput.vue";
+import VehicleList from "./components/VehicleList.vue";
 
 // import RightArrowIcon from "../../components/icons/RightArrowIcon.vue";
+const vehicleStore = useVehicleStore();
+const { vehicles } = storeToRefs(vehicleStore);
+
+onMounted(async () => {
+    await vehicleStore.getVehicles();
+});
 </script>

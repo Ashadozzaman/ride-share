@@ -38,6 +38,10 @@ const routes = [
             {
                 path:'/profile',
                 component: () => import('../pages/admin/users/Profile.vue')
+            },
+            {
+                path:'/map',
+                component: () => import('../pages/admin/map/MapPage.vue')
             }
         ]
     }

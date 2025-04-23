@@ -17,7 +17,6 @@ class PlaceController extends Controller
             'access_token' => env('MAPBOX_ACCESS_TOKEN'),
             'limit' => 10
         ]);
-        // dd(env('MAPBOX_ACCESS_TOKEN'));
 
         if ($response->successful()) {
             return response($response->json());
