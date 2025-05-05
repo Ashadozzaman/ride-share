@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { ref } from "vue";
 import { _debounce } from "../../../../helper/utils";
+import { useAutoCompleteStore } from "../../../../stores/vehicle/auto-complete-store";
 import { useVehicleStore } from "../../../../stores/vehicle/vehicle-store";
 
 const props = defineProps(["placeHolder"]);
-const showSuggestions = ref(false);
+
 const vehicleStore = useVehicleStore();
 const { places } = storeToRefs(vehicleStore);
-const query = ref("");
+
+const autoCompleteStore = useAutoCompleteStore();
+const { showSuggestionDestination, queryDestination } =
+    storeToRefs(autoCompleteStore);
 
 const emit = defineEmits(["selectPlace"]);
 const search = _debounce(async function () {
-    await vehicleStore.getPlaces(query.value);
+    await vehicleStore.getPlaces(queryDestination.value);
 });
 
 function hideSuggestions() {
     setTimeout(() => {
-        (showSuggestions.value = false), 100;
+        (showSuggestionDestination.value = false), 100;
     });
 }
 </script>
@@ -31,9 +34,9 @@ function hideSuggestions() {
                 <MapPinIcon class="h-5 w-5" />
             </span>
             <input
-                @focus="showSuggestions = true"
+                @focus="showSuggestionDestination = true"
                 @blur="hideSuggestions"
-                v-model="query"
+                v-model="queryDestination"
                 @keydown="search"
                 type="text"
                 :placeholder="placeHolder"
@@ -41,7 +44,7 @@ function hideSuggestions() {
             />
         </div>
         <ul
-            v-show="showSuggestions"
+            v-show="showSuggestionDestination"
             class="w-full z-10 rounded-md shadow-md overflow-y-auto"
         >
             <li

@@ -3,9 +3,32 @@ import { ref } from "vue";
 
 export const useMapStore = defineStore("map-store", () => {
     const loading = ref(false);
-    const destination = ref("");
-    const location = ref("");
-    return { loading, destination, location };
+    const destination = ref({});
+    const location = ref({});
+
+    function getLocationCoordinates() {
+        const longitude = location.value.properties?.coordinates?.longitude;
+        const latitude = location.value.properties?.coordinates?.latitude;
+        const place = location.value.properties?.place_formatted;
+
+        return { longitude, latitude, place };
+    }
+
+    function getDestinationCoordinates() {
+        const longitude = location.value.properties?.coordinates?.longitude;
+        const latitude = location.value.properties?.coordinates?.latitude;
+        const place = location.value.properties?.place_formatted;
+
+        return { longitude, latitude, place };
+    }
+
+    return {
+        loading,
+        destination,
+        location,
+        getLocationCoordinates,
+        getDestinationCoordinates,
+    };
 });
 if (import.meta.hot) {
     import.meta.hot.accept(acceptHMRUpdate(useMapStore, import.meta.hot));

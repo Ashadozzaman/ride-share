@@ -1,19 +1,31 @@
 <script setup>
 import Leaflet from "leaflet";
 import { onMounted, ref } from "vue";
+import { useMapStore } from "../../../stores/map/map-store";
 const map = ref(null);
+const mapStore = useMapStore();
+const {
+    place: placeL,
+    longitude: longitudeL,
+    latitude: latitudeL,
+} = mapStore.getLocationCoordinates();
+const {
+    place: placeD,
+    longitude: longitudeD,
+    latitude: latitudeD,
+} = mapStore.getDestinationCoordinates();
 
 onMounted(() => {
-    map.value = Leaflet.map("map").setView([51.505, -0.09], 20);
+    map.value = Leaflet.map("map").setView([latitudeD, longitudeL], 20);
 
     Leaflet.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution:
             '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map.value);
 
-    Leaflet.marker([51.5, -0.09])
+    Leaflet.marker([latitudeD, longitudeL])
         .addTo(map.value)
-        .bindPopup("A pretty CSS popup.<br> Easily customizable.")
+        .bindPopup(placeL)
         .openPopup();
 });
 </script>

@@ -19,13 +19,28 @@
                             v-for="vehicle in vehicles?.data"
                             :key="vehicle?.id"
                         >
-                            {{ vehicle?.name }}-{{ vehicle?.model }}
+                            {{ vehicle?.name }}-{{ vehicle?.model }}-{{
+                                vehicle?.price
+                            }}$/Km
                         </option>
-                        <option value="">Taxi 2</option>
                     </select>
                     <div class="flex gap-1">
-                        <AutoCompleteInput :placeHolder="'Pickup'" />
-                        <AutoCompleteInput :placeHolder="'Destination'" />
+                        <SelectPickupInput
+                            @selectPlace="selectPickup"
+                            :placeHolder="'Pickup'"
+                        />
+                        <SelectDestinationInput
+                            @selectPlace="selectDestination"
+                            :placeHolder="'Destination'"
+                        />
+                        <!-- <AutoCompleteInput
+                            @selectPlace="selectPickup"
+                            :placeHolder="'Pickup'"
+                        />
+                        <AutoCompleteInput
+                            @selectPlace="selectDestination"
+                            :placeHolder="'Destination'"
+                        /> -->
                         <!-- <input
                             type="text"
                             name=""
@@ -60,13 +75,32 @@
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 import { App } from "../../../api/api";
+import { useMapStore } from "../../../stores/map/map-store";
+import { useAutoCompleteStore } from "../../../stores/vehicle/auto-complete-store";
 import { useVehicleStore } from "../../../stores/vehicle/vehicle-store";
-import AutoCompleteInput from "./components/AutoCompleteInput.vue";
+import SelectDestinationInput from "./components/SelectDestinationInput.vue";
+import SelectPickupInput from "./components/SelectPickupInput.vue";
 import VehicleList from "./components/VehicleList.vue";
 
 // import RightArrowIcon from "../../components/icons/RightArrowIcon.vue";
 const vehicleStore = useVehicleStore();
 const { vehicles } = storeToRefs(vehicleStore);
+
+const autoCompleteStore = useAutoCompleteStore();
+const { showSuggestionPickup, showSuggestionDestination } =
+    storeToRefs(autoCompleteStore);
+
+const mapStore = useMapStore();
+const { location, destination } = storeToRefs(mapStore);
+
+function selectPickup(place) {
+    location.value = place;
+    showSuggestionPickup.value = false;
+}
+function selectDestination(place) {
+    mapStore.destination = place;
+    showSuggestionDestination.value = false;
+}
 
 onMounted(async () => {
     await vehicleStore.getVehicles();
