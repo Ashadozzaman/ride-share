@@ -30,7 +30,6 @@ Route::controller(VehicleController::class)->group(function () {
     Route::delete('vehicles', 'destroy');
 });
 
-
 Route::controller(PlaceController::class)->group(function () {
     Route::get('places', 'fetchPlaces');
 });
