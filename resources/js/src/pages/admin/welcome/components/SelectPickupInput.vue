@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { App } from "../../../../api/api";
 import { _debounce } from "../../../../helper/utils";
 import { useAutoCompleteStore } from "../../../../stores/vehicle/auto-complete-store";
 import { useVehicleStore } from "../../../../stores/vehicle/vehicle-store";
 
-const props = defineProps(["placeHolder"]);
+const props = defineProps(["placeHolder", "loading"]);
 
 const vehicleStore = useVehicleStore();
 const { places } = storeToRefs(vehicleStore);
@@ -34,13 +35,23 @@ function hideSuggestions() {
             </span>
             <input
                 @focus="showSuggestionPickup = true"
-                @blur="hideSuggestions"
                 v-model="queryPickup"
                 @keydown="search"
                 type="text"
                 :placeholder="placeHolder"
-                class="input-class-text pl-10"
+                class="input-class-text"
             />
+
+            <span
+                class="absolute inset-y-0 right-0 pl-3 flex items-center pointer-events-none"
+                v-show="loading"
+            >
+                <img
+                    :src="App.baseUrl + '/images/loading.gif'"
+                    width="20px"
+                    alt=""
+                />
+            </span>
         </div>
         <ul
             v-show="showSuggestionPickup"
@@ -49,13 +60,11 @@ function hideSuggestions() {
             <li
                 v-for="place in places"
                 :key="place?.properties"
-                v-show="
-                    place?.properties?.place_formatted === '' ? false : true
-                "
+                v-show="place?.properties?.full_address === '' ? false : true"
                 class="bg-gray-100 p-2 hover:bg-blue-200 cursor-pointer"
                 @click="emit('selectPlace', place)"
             >
-                {{ place?.properties?.place_formatted }}
+                {{ place?.properties?.full_address }}
             </li>
         </ul>
     </div>

@@ -57,6 +57,7 @@
                         /> -->
                     </div>
                     <button
+                        @click="bookTaxi"
                         class="bg-indigo-600 text-white py-2 px-2 rounded-md shadow-sm"
                     >
                         <span>Book Taxi Now</span>
@@ -74,6 +75,7 @@
 <script setup>
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
+import { useRouter } from "vue-router";
 import { App } from "../../../api/api";
 import { useMapStore } from "../../../stores/map/map-store";
 import { useAutoCompleteStore } from "../../../stores/vehicle/auto-complete-store";
@@ -87,8 +89,12 @@ const vehicleStore = useVehicleStore();
 const { vehicles } = storeToRefs(vehicleStore);
 
 const autoCompleteStore = useAutoCompleteStore();
-const { showSuggestionPickup, showSuggestionDestination } =
-    storeToRefs(autoCompleteStore);
+const {
+    showSuggestionPickup,
+    showSuggestionDestination,
+    queryPickup,
+    queryDestination,
+} = storeToRefs(autoCompleteStore);
 
 const mapStore = useMapStore();
 const { location, destination } = storeToRefs(mapStore);
@@ -96,10 +102,17 @@ const { location, destination } = storeToRefs(mapStore);
 function selectPickup(place) {
     location.value = place;
     showSuggestionPickup.value = false;
+    queryPickup.value = place?.properties?.full_address;
 }
 function selectDestination(place) {
     mapStore.destination = place;
     showSuggestionDestination.value = false;
+    queryDestination.value = place?.properties?.full_address;
+}
+
+const router = useRouter();
+function bookTaxi() {
+    router.push("/map");
 }
 
 onMounted(async () => {

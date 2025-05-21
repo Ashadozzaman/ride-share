@@ -17,7 +17,7 @@ function getHeaders() {
 }
 export function postData(endpoint, inputData) {
     const headers = getHeaders();
-    console.log(headers);
+    // console.log(headers);
     return new Promise(async(resolve, reject) => {
         try {
             const response = await fetch(App.apiBaseUrl + endpoint, {

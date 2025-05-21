@@ -35,7 +35,6 @@ function hideSuggestions() {
             </span>
             <input
                 @focus="showSuggestionDestination = true"
-                @blur="hideSuggestions"
                 v-model="queryDestination"
                 @keydown="search"
                 type="text"
@@ -50,13 +49,11 @@ function hideSuggestions() {
             <li
                 v-for="place in places"
                 :key="place?.properties"
-                v-show="
-                    place?.properties?.place_formatted === '' ? false : true
-                "
+                v-show="place?.properties?.full_address === '' ? false : true"
                 class="bg-gray-100 p-2 hover:bg-blue-200 cursor-pointer"
                 @click="emit('selectPlace', place)"
             >
-                {{ place?.properties?.place_formatted }}
+                {{ place?.properties?.full_address }}
             </li>
         </ul>
     </div>

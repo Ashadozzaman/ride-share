@@ -28,3 +28,4 @@ class PlaceController extends Controller
         }
     }
 }
+

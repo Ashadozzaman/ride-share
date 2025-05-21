@@ -1,3 +1,91 @@
+## Docker Compose
+
+Docker compose basic command
+
+```
+docker compose ps
+docker compose --build -d
+docker compose -d
+docker compose down
+
+docker exec -it laravel-php bash // enter container
+```
+
+## Can use your local MySQL credentials ?
+
+Yes, absolutely — you **can use your local MySQL credentials** and **ignore the MySQL Docker container**, especially if your database is running outside of Docker (locally or on a remote server like your production service).
+
+---
+
+### ✅ Steps to Use Local MySQL Instead of Docker MySQL:
+
+#### 1. **Update `.env` file** to match your local MySQL:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=host.docker.internal
+DB_PORT=3306
+DB_DATABASE=ride_share
+DB_USERNAME=root
+DB_PASSWORD=Start@123
+```
+
+-   ✅ `host.docker.internal` allows Docker containers to talk to your host machine’s services (like MySQL).
+-   ❗️Don't use `127.0.0.1` or `localhost` from inside Docker — it refers to the container itself.
+
+---
+
+#### 2. **Comment or remove the `mysql` service** in your `docker-compose.yml`:
+
+```yaml
+# mysql:
+#     image: mysql:8.0
+#     container_name: laravel-mysql
+#     ports:
+#         - "3307:3307"
+#     ...
+```
+
+Or just remove `depends_on: - mysql` from the PHP container if it's no longer relevant.
+
+---
+
+#### 3. **Rebuild the containers** without MySQL:
+
+```bash
+docker-compose up -d --build
+```
+
+---
+
+#### 4. ✅ **Test connection** from your Laravel container:
+
+```bash
+docker exec -it laravel-php bash
+# Inside container:
+php artisan migrate
+```
+
+If configured correctly, Laravel should now connect to your **local MySQL** using the provided credentials.
+
+---
+
+### 🔐 Extra Tip for Production
+
+In production, you can override `.env` with production database credentials:
+
+```env
+DB_HOST=production-db-host
+DB_PORT=3306
+DB_DATABASE=prod_db
+DB_USERNAME=prod_user
+DB_PASSWORD=prod_pass
+```
+
+---
+
+Let me know if you're using a `.env.docker` or have multiple environments — I can help structure that cleanly too!
+
 ## Error Solve
 
 ### That error means your Laravel container

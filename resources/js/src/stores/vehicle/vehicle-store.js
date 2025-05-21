@@ -117,19 +117,19 @@ export const useVehicleStore = defineStore("vehicle-store", () => {
     return {
         vehicles,
         loading,
-        getVehicles,
         query,
         page,
         modalVal,
-        toggleModal,
-        deleteVehicle,
         vehicleId,
         vehicleInput,
         vVehicle$,
-        addOrUpdateVehicle,
         edit,
+        places,
+        addOrUpdateVehicle,
+        toggleModal,
+        getVehicles,
         getPlaces,
-        places
+        deleteVehicle,
     };
 });
 if (import.meta.hot) {

@@ -69,4 +69,8 @@ export default defineConfig({
 
 -Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. Weighing just about 42 KB of JS, it has all the mapping features most developers ever need.
 
+### Leaflet Routing Machine
+
+-   Easy, flexible routing for Leaflet
+
 ### TO DO

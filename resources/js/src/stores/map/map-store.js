@@ -15,9 +15,9 @@ export const useMapStore = defineStore("map-store", () => {
     }
 
     function getDestinationCoordinates() {
-        const longitude = location.value.properties?.coordinates?.longitude;
-        const latitude = location.value.properties?.coordinates?.latitude;
-        const place = location.value.properties?.place_formatted;
+        const longitude = destination.value.properties?.coordinates?.longitude;
+        const latitude = destination.value.properties?.coordinates?.latitude;
+        const place = destination.value.properties?.place_formatted;
 
         return { longitude, latitude, place };
     }
